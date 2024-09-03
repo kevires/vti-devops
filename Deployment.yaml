@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: web-app-deployment
 spec:
-  replicas: 3  # Triển khai 3 bản sao
+  replicas: 3
   selector:
     matchLabels:
       app: web-app
@@ -19,10 +19,19 @@ spec:
           port:
         - containerPort: 80
           name: ''
-       resources:
-          limits:
-            memory: "256Mi"
-            cpu: "128m"
-          requests:
-            memory: "128Mi"
-            cpu: "64m"
+          volumeMounts:
+          - name: storage-rwo
+            mountPath: /usr/share/nginx/html
+            volumes:
+            - name: storage-rwo
+              persistentVolumeClaim:
+                claimName: pvc-rwo
+            # - name: storage-rom
+            #   persistentVolumeClaim:
+            #     claimName: pvc-rom
+            # - name: storage-rwm
+            #   persistentVolumeClaim:
+            #     claimName: pvc-rwm
+            # - name: storage-rwop
+            #   persistentVolumeClaim:
+            #     claimName: pvc-rwop
